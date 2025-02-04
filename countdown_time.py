@@ -2,6 +2,7 @@ import pygame
 import sys
 from datetime import datetime, timedelta
 import subprocess
+import webbrowser
 
 # 初始化pygame
 pygame.init()
@@ -44,7 +45,7 @@ countdown_duration = timedelta(hours=9)
 
 # 設定開始時間為今天的早上09:12:30
 # time_input=input("上班時間為何(format=HH:mm:SS)=").strip().split(":")
-time_input=sys.argv[1].strip().split(":")
+time_input = sys.argv[1].strip().split(":")
 
 start_time = datetime.now().replace(hour=int(time_input[0]), minute=int(time_input[1]), second=int(time_input[2]), microsecond=0)
 end_time = start_time + countdown_duration
@@ -66,8 +67,19 @@ def show_message_screen():
     pygame.quit()
     sys.exit()
 
+
+def open_notion():
+    url = "https://www.notion.so/16de0299c0f08045b512cce95719722f?pvs=4"
+    webbrowser.get('chrome').open_new(url)
+
+
+chrome_path = "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe"
+webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chrome_path))
+
+open_notion()
 # 主循環
 running = True
+ten_minutes = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -77,6 +89,12 @@ while running:
     # 計算剩餘時間
     now = datetime.now()
     remaining_time = end_time - now
+    # print(remaining_time.total_seconds())
+    if ten_minutes:
+        if remaining_time.total_seconds() <= 600:
+            print("剩餘10分鐘")
+            ten_minutes = False
+            open_notion()
 
     if remaining_time.total_seconds() <= 0:
         print("Remaining time < 0")
