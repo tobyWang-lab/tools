@@ -92,12 +92,11 @@ while running:
     # print(remaining_time.total_seconds())
     if ten_minutes:
         if remaining_time.total_seconds() <= 600:
-            print("剩餘10分鐘")
+            # print("剩餘10分鐘")
             ten_minutes = False
             open_notion()
-
     if remaining_time.total_seconds() <= 0:
-        print("Remaining time < 0")
+        # print("Remaining time < 0")
         show_message_screen()
 
     # 格式化剩餘時間
@@ -114,6 +113,7 @@ while running:
     screen.blit(text_surface, text_rect)
 
     # 更新顯示
+    pygame.display.update()
     pygame.display.flip()
 
     # 設置幀率
